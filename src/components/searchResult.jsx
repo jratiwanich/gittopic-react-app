@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { gql, useQuery } from '@apollo/client';
 
-
+/***********************************************
+ * tested query with Playground tool first
+ * Only filter for the firt 10 on the pagination 
+ * - can make it dynamic in the future
+************************************************/
 const GET_GIT_TOPICS = gql`
   query SearchTopics($search: String!) {
     search(query: $search, type: REPOSITORY, first: 10) {
@@ -35,22 +39,21 @@ const GET_GIT_TOPICS = gql`
 
   function SearchResult(props) {
 
-    // function handleChange(event) {
-    //   // Here, we invoke the callback with the new value
-    //   props.onChange(event.target.value);
-    // }
     let searchTerm = props.value;
     const [newTopic, setTopic] = useState(searchTerm);
     let search;
+    //initialise the search phrase - whether from user clicking on a topi or key in from navbar top
     if(searchTerm===newTopic){
-      search = `${searchTerm} stars:>10000`;
+      search = `${searchTerm} stars:>10000`; //only filter if stargazers are high to prevent junk
     }else{
       search = `${newTopic} stars:>10000`;
       searchTerm = newTopic;
       props.onChange(newTopic);
-      updateSearchTerm(newTopic);
+      //updateSearchTerm(newTopic);
     }
     console.debug("search",search,newTopic);
+
+    //parsing the search phase into the gql query
     const { loading, error, data } = useQuery(GET_GIT_TOPICS,
       {
         variables: { search}
@@ -59,14 +62,15 @@ const GET_GIT_TOPICS = gql`
     if (loading){ 
       return (
         <div>
-          <i className="fas fa-sync fa-spin" aria-hidden="true"></i>
-          ...Searching for {search}
+          <i className="fa fa-spinner fa-spin mr-4"/>
+          <span>...Searching for {search}</span>
         </div>
       );
     }
     if (error) return `Error! ${error.message}`;
-  
+    //debug the result if needed
     console.debug("RESULT:",data);
+
     return (
       <React.Fragment>
         {data && data.search.edges &&  data.search.edges.map((edge, index) => (
@@ -91,8 +95,7 @@ const GET_GIT_TOPICS = gql`
     );
   }
 
- function updateSearchTerm(data){
-   
+ function updateSearchTerm(data){ 
     console.debug("updateSearchTerm",data);
   }
 

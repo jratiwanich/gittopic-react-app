@@ -14,15 +14,10 @@ class App extends React.Component {
     super();
   }
   
-  handleIncrement = key => {
-    
-   this.setState({ searchTerm: key });
-    console.log("handleIncrement:",key,this.state.searchTerm);
-  }
-
-  handleClick=(e)=>{
-    this.setState({ searchTerm: "sdfsdf" });
-    console.log('render how 😡',e.target);
+  handleSearchChange = key => {
+    //update the search term when user type in the search bar
+    this.setState({ searchTerm: key });
+    console.log("handleSearchChange:",key,this.state.searchTerm);
   }
 
   handleChange = (e) => {
@@ -31,11 +26,12 @@ class App extends React.Component {
   };
 
   render(){
+    //check to see if react will re-render
     console.log('I render now 😡');
     return (
       
       <div>
-        <SearchBar initSearch={this.state.searchTerm} onIncrement={this.handleIncrement}></SearchBar>
+        <SearchBar initSearch={this.state.searchTerm} onSearchChange={this.handleSearchChange}></SearchBar>
         <div className="jumbotron">
           <DisplayContent search={this.state.searchTerm}></DisplayContent>
           <hr className="my-4"></hr>

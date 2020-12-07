@@ -5,9 +5,22 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.debug{
+  border: 1px solid red;
+}
+
+.btn-sm{
+  padding: 2px 5px !important;
+}
+
+.badge-star{
+  height: 18px;
 }
